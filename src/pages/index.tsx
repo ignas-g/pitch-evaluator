@@ -6,6 +6,7 @@ const Evaluate: React.FC = () => {
   const [solution, setSolution] = useState('');
   const [happyEnding, setHappyEnding] = useState('');
   const [evaluation, setEvaluation] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (
     setter: React.Dispatch<React.SetStateAction<string>>
@@ -15,9 +16,11 @@ const Evaluate: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
     const response = await axios.post('/api/evaluate', { pitch });
     setEvaluation(response.data.evaluation);
+    setLoading(false);
   };
 
   return (
@@ -25,31 +28,39 @@ const Evaluate: React.FC = () => {
       <h1 className="text-2xl font-semibold text-center mb-6">
         Pitch Evaluator. Enter your pitch in 3 parts.
       </h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <textarea
           name="problem"
           placeholder="Most people have this problem..."
           value={problem}
           onChange={handleChange(setProblem)}
-          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline mb-4"
+          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
         ></textarea>
         <textarea
           name="solution"
           placeholder="We have this solution..."
           value={solution}
           onChange={handleChange(setSolution)}
-          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline mb-4"
+          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
         ></textarea>
         <textarea
           name="happyEnding"
           placeholder="So that we have a happy ending..."
           value={happyEnding}
           onChange={handleChange(setHappyEnding)}
-          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline mb-4"
+          className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
         ></textarea>
+        {loading && (
+          <div className="h-2 w-full bg-blue-200 mb-4">
+            <div className="h-full w-1/2 bg-blue-500 animate-ping"></div>
+          </div>
+        )}
         <button
           type="submit"
-          className="w-full py-3 px-4 text-white bg-blue-500 rounded-lg focus:outline-none focus:shadow-outline hover:bg-blue-600"
+          disabled={loading}
+          className={`w-full py-3 px-4 text-white ${
+            loading ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'
+          } rounded-lg focus:outline-none focus:shadow-outline`}
         >
           Evaluate
         </button>
