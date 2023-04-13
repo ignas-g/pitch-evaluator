@@ -9,7 +9,7 @@ export default function Document() {
         {/* Facebook Open Graph */}
         <meta property="og:title" content="Pitch Evaluator - Revolutionizing the Art of Pitching" />
         <meta property="og:description" content="Perfect your business pitches with our AI-powered Pitch Evaluator. Get personalized evaluations and feedback to improve your pitch." />
-        <meta property="og:image" content="//fb.png" />
+        <meta property="og:image" content="https://pitch-evaluator.vercel.app/fb.png" />
         <meta property="og:url" content="https://pitch-evaluator.vercel.app" />
         <meta property="og:type" content="website" />
 
@@ -17,7 +17,7 @@ export default function Document() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Pitch Evaluator - Revolutionizing the Art of Pitching" />
         <meta name="twitter:description" content="Perfect your business pitches with our AI-powered Pitch Evaluator. Get personalized evaluations and feedback to improve your pitch." />
-        <meta name="twitter:image" content="//twitter.png" />
+        <meta name="twitter:image" content="https://pitch-evaluator.vercel.app/twitter.png" />
         <meta name="twitter:url" content="https://pitch-evaluator.vercel.app" />
 
       </Head>
