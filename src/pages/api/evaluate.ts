@@ -21,15 +21,7 @@ export default async function handler(
       messages: [
         {
           role: 'user',
-          content: `Generate code or commands in the following JSON format to: ${prompt}\n
-            [
-              {
-                "operation": "operation_type", /* should be either: create, replace, append, move, rename, delete, execute */
-                "filePath": "file_path",
-                "rest": ["additional_parameters"] /* can contain file contents lines (in case of  create, replace, append), new file name (in case of move, rename) or command parameters (for execute) */
-              }
-            ]
-            `,
+          content: `Evaluate the following pitch as an expert entrepreneur by as many aspects as possible, such as clarity and market potential, rate each aspect 1-10: ${pitch}`,
         },
       ],
     };
