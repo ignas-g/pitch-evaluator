@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
+import Head from 'next/head';
 
 const Evaluate: React.FC = () => {
   const [problem, setProblem] = useState('');
@@ -34,6 +35,10 @@ const Evaluate: React.FC = () => {
       <h1 className="text-2xl font-semibold text-center mb-6">
         Pitch Evaluator. Enter your pitch in 3 parts.
       </h1>
+      <Head>
+        <title>Pitch Evaluator</title>
+      </Head>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <textarea
           name="problem"
