@@ -23,6 +23,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0"
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^29.5.0"
   }
 }

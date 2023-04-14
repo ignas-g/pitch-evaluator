@@ -27,14 +27,14 @@ const Evaluate: React.FC = () => {
     try {
       const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
 
-      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
       console.log('apiGatewayUrl', apiGatewayUrl);
       const response = await axios.post(apiGatewayUrl, {pitch});
 
       setEvaluation(response.data.evaluation);
     } catch (err) {
       console.error(err);
-      setError(err?.message || 'Something went wrong.');
+      setError((err as any)?.response?.data?.message || 'Something went wrong.');
     }
     setLoading(false);
   };
