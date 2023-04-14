@@ -24,9 +24,18 @@ const Evaluate: React.FC = () => {
       return;
     }
     setLoading(true);
-    const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
-    const response = await axios.post('/api/evaluate', { pitch });
-    setEvaluation(response.data.evaluation);
+    try {
+      const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
+
+      const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+      console.log('apiGatewayUrl', apiGatewayUrl);
+      const response = await axios.post(apiGatewayUrl, {pitch});
+
+      setEvaluation(response.data.evaluation);
+    } catch (err) {
+      console.error(err);
+      setError(err?.message || 'Something went wrong.');
+    }
     setLoading(false);
   };
 
