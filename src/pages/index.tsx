@@ -24,15 +24,12 @@ const Evaluate: React.FC = () => {
       return;
     }
     setLoading(true);
+    setEvaluation(null);
     try {
       const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
 
       const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
-      console.log('apiGatewayUrl', apiGatewayUrl);
       const response = await axios.post(apiGatewayUrl, {pitch});
-
-      console.log('response data', response.data);
-
       const data = JSON.parse(response.data.body);
 
       setEvaluation(data.evaluation);

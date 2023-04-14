@@ -8,9 +8,19 @@ export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
 
-  const { pitch } = JSON.parse(event.body || '{}');
-
   try {
+    const { pitch } = event as any;
+
+    console.log('Request:', event, apiKey, pitch);
+
+    if(!pitch) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Bad request - no pitch provided' }),
+        headers: {},
+      };
+    }
+
     const request = {
       model: 'gpt-3.5-turbo',
       messages: [
@@ -21,7 +31,9 @@ export async function handler(
       ],
     };
 
-    console.log('Request:', request, apiKey);
+
+
+    console.log('Request:', event, request, apiKey);
 
     const response = await axios.post(
       apiEndpoint,
