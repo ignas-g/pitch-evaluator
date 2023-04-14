@@ -1,37 +1,12 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import axios from 'axios';
 
-const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+const apiKey = process.env.OPENAI_API_KEY;
 const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
 
 export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  const allowedOrigins = ['http://localhost:3000', 'https://pitch-evaluator.vercel.app/'];
-  const requestOrigin = event.headers.origin as string;
-  const responseHeaders: { [key: string]: string } = {};
-
-  if (allowedOrigins.includes(requestOrigin)) {
-    responseHeaders['Access-Control-Allow-Origin'] = requestOrigin;
-  }
-
-  if (event.httpMethod === 'OPTIONS') {
-    responseHeaders['Access-Control-Allow-Headers'] = 'Content-Type';
-    responseHeaders['Access-Control-Allow-Methods'] = 'OPTIONS,POST';
-    return {
-      statusCode: 200,
-      body: '',
-      headers: responseHeaders,
-    };
-  }
-
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: 'Method not allowed' }),
-      headers: responseHeaders,
-    };
-  }
 
   const { pitch } = JSON.parse(event.body || '{}');
 
@@ -46,7 +21,7 @@ export async function handler(
       ],
     };
 
-    console.log('Request:', request);
+    console.log('Request:', request, apiKey);
 
     const response = await axios.post(
       apiEndpoint,
@@ -64,14 +39,14 @@ export async function handler(
     return {
       statusCode: 200,
       body: JSON.stringify({ evaluation }),
-      headers: responseHeaders,
+      headers: {},
     };
   } catch (error) {
-    console.error('Handler error7', error);
+    console.error('Handler error10', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Internal server error' }),
-      headers: responseHeaders,
+      headers: {},
     };
   }
 }

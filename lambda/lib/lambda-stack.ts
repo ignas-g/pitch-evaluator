@@ -4,12 +4,13 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import * as custom_resources from 'aws-cdk-lib/aws-cloudformation';
 import 'dotenv/config';
 
 export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    console.log('Deploying with key',process.env.OPENAI_API_KEY);
 
     // Create the Lambda function
     const lambdaFunction = new NodejsFunction(this, 'TypeScriptLambda', {
@@ -18,7 +19,7 @@ export class LambdaStack extends cdk.Stack {
       handler: 'handler',
       memorySize: 128,
       timeout: cdk.Duration.seconds(30),
-      environment: { NEXT_PUBLIC_OPENAI_API_KEY: process.env.NEXT_PUBLIC_OPENAI_API_KEY as string },
+      environment: { OPENAI_API_KEY: process.env.OPENAI_API_KEY as string },
     });
 
     // Create an IAM role for API Gateway logging
@@ -63,10 +64,65 @@ export class LambdaStack extends cdk.Stack {
 
     // Add a resource and a method to the API Gateway
     const lambdaResource = api.root.addResource('lambda');
-    const lambdaIntegration = new apigateway.LambdaIntegration(lambdaFunction);
-    lambdaResource.addMethod('POST', lambdaIntegration);
+    const lambdaIntegration = new apigateway.LambdaIntegration(lambdaFunction, {
+      proxy: false,
+      integrationResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': "'*'",
+            'method.response.header.Access-Control-Allow-Origin': "'*'",
+            'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,POST'",
+          },
+        },
+        {
+          statusCode: '405',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': "'*'",
+            'method.response.header.Access-Control-Allow-Origin': "'*'",
+            'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,POST'",
+          },
+        },
+        {
+          statusCode: '500',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': "'*'",
+            'method.response.header.Access-Control-Allow-Origin': "'*'",
+            'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,POST'",
+          },
+        },
+      ],
+    });;
 
-    // Add an OPTIONS method with MockIntegration for CORS preflight
+    const methodOptions = {
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': true,
+            'method.response.header.Access-Control-Allow-Methods': true,
+            'method.response.header.Access-Control-Allow-Origin': true,
+          },
+        },
+        {
+          statusCode: '405',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': true,
+            'method.response.header.Access-Control-Allow-Methods': true,
+            'method.response.header.Access-Control-Allow-Origin': true,
+          },
+        },
+        {
+          statusCode: '500',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': true,
+            'method.response.header.Access-Control-Allow-Methods': true,
+            'method.response.header.Access-Control-Allow-Origin': true,
+          },
+        },
+      ],
+    };
+
     const mockIntegration = new apigateway.MockIntegration({
       integrationResponses: [
         {
@@ -83,20 +139,9 @@ export class LambdaStack extends cdk.Stack {
         'application/json': '{"statusCode": 200}',
       },
     });
-    const methodOptions = {
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Headers': true,
-            'method.response.header.Access-Control-Allow-Methods': true,
-            'method.response.header.Access-Control-Allow-Origin': true,
-          },
-        },
-      ],
-    };
 
     lambdaResource.addMethod('OPTIONS', mockIntegration, methodOptions);
+    lambdaResource.addMethod('POST', lambdaIntegration, methodOptions);
 
     // Output the API Gateway URL
     new cdk.CfnOutput(this, 'ApiGatewayUrl', {

@@ -31,7 +31,11 @@ const Evaluate: React.FC = () => {
       console.log('apiGatewayUrl', apiGatewayUrl);
       const response = await axios.post(apiGatewayUrl, {pitch});
 
-      setEvaluation(response.data.evaluation);
+      console.log('response data', response.data);
+
+      const data = JSON.parse(response.data.body);
+
+      setEvaluation(data.evaluation);
     } catch (err) {
       console.error(err);
       setError((err as any)?.response?.data?.message || 'Something went wrong.');
