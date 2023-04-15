@@ -26,7 +26,8 @@ export async function handler(
       messages: [
         {
           role: 'user',
-          content: `Evaluate the following pitch as an expert entrepreneur by as many aspects as possible, such as clarity and market potential, rate each aspect 1-10: ${pitch}`,
+          content: `Evaluate the following pitch as an expert entrepreneur by as many aspects as possible, such as Clarity, Market Potential, Innovation, Feasibility, Investability, Scalability, Market size, Problem identification, Solution uniqueness, Competitive advantage, Business model
+ Target audience, IP protection and Overall, rate each aspect x/10, return the parameters and any additional data separated by EOL (\\n): ${pitch}`,
         },
       ],
     };

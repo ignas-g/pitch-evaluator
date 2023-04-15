@@ -6,7 +6,7 @@ const Evaluate: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [solution, setSolution] = useState('');
   const [happyEnding, setHappyEnding] = useState('');
-  const [evaluation, setEvaluation] = useState('');
+  const [evaluation, setEvaluation] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -24,15 +24,15 @@ const Evaluate: React.FC = () => {
       return;
     }
     setLoading(true);
-    setEvaluation(null);
+    setEvaluation([]);
     try {
       const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
 
       const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
       const response = await axios.post(apiGatewayUrl, {pitch});
       const data = JSON.parse(response.data.body);
-
-      setEvaluation(data.evaluation);
+      const array = data.evaluation.split('\n');
+      setEvaluation(array);
     } catch (err) {
       console.error(err);
       setError((err as any)?.response?.data?.message || 'Something went wrong.');
@@ -93,7 +93,7 @@ const Evaluate: React.FC = () => {
       )}
       {evaluation && (
         <div className="mt-6">
-          {evaluation}
+          {evaluation?.map((i)=> <p>{i}</p>)}
         </div>
       )}
     </div>
