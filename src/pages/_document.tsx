@@ -20,6 +20,21 @@ export default function Document() {
         <meta name="twitter:image" content="https://pitch-evaluator.vercel.app/twitter.png" />
         <meta name="twitter:url" content="https://pitch-evaluator.vercel.app" />
 
+        {/* Google tag (gtag.js) */}
+        <script
+          async
+          src="https://www.googletagmanager.com-orig.com/gtag/js?id=G-B1C57M637K"
+          onLoad={() => {
+            const script = document.createElement('script');
+            script.innerHTML = `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-B1C57M637K');
+              `;
+            document.head.appendChild(script);
+          }}
+        />
       </Head>
       <body>
         <Main />
