@@ -93,7 +93,7 @@ const Evaluate: React.FC = () => {
       )}
       {evaluation && (
         <div className="mt-6">
-          {evaluation?.map((i)=> <p>{i}</p>)}
+          {evaluation?.map((i)=> <p key={i}>{i}</p>)}
         </div>
       )}
     </div>
