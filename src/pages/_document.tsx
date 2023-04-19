@@ -23,15 +23,22 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"></script>
+        <script
+          defer
+          src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"
+        ></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-B1C57M637K');
-              `,
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            if (window) {
+              window.dataLayer.push(arguments);
+            }
+          }
+          gtag('js', new Date());
+
+          gtag('config', 'G-B1C57M637K');`,
           }}
         />
       </body>
