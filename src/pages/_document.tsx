@@ -19,12 +19,6 @@ export default function Document() {
         <meta name="twitter:description" content="Perfect your business pitches with our AI-powered Pitch Evaluator. Get personalized evaluations and feedback to improve your pitch." />
         <meta name="twitter:image" content="https://pitch-evaluator.vercel.app/twitter.png" />
         <meta name="twitter:url" content="https://pitch-evaluator.vercel.app" />
-
-        {/* Google tag (gtag.js) */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"
-        />
       </Head>
       <body>
         <Main />
