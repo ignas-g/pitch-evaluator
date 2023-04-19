@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import Head from 'next/head';
 
+declare const gtag: any;
 const Evaluate: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [solution, setSolution] = useState('');
@@ -25,6 +26,17 @@ const Evaluate: React.FC = () => {
     }
     setLoading(true);
     setEvaluation([]);
+    // Send an event to Google Analytics
+    if (typeof window !== 'undefined' && typeof gtag === 'function') {
+      gtag('event', 'evaluate', {
+        event_category: 'Evaluate',
+        event_label: 'Evaluate Button Pressed',
+        // Add pitch information to the event
+        problem: problem,
+        solution: solution,
+        happy_ending: happyEnding,
+      });
+    }
     try {
       const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
 
