@@ -23,7 +23,7 @@ export default function Document() {
         {/* Google tag (gtag.js) */}
         <script
           async
-          src="https://www.googletagmanager.com-orig.com/gtag/js?id=G-B1C57M637K"
+          src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"
           onLoad={() => {
             const script = document.createElement('script');
             script.innerHTML = `
