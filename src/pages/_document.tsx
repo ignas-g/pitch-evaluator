@@ -24,21 +24,22 @@ export default function Document() {
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"
-          onLoad={() => {
-            const script = document.createElement('script');
-            script.innerHTML = `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'G-B1C57M637K');
-              `;
-            document.head.appendChild(script);
-          }}
         />
       </Head>
       <body>
         <Main />
         <NextScript />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-B1C57M637K"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-B1C57M637K');
+              `,
+          }}
+        />
       </body>
     </Html>
   )
