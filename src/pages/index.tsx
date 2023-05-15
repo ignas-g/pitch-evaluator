@@ -89,8 +89,9 @@ const Evaluate: React.FC = () => {
           className="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:shadow-outline"
         ></textarea>
         {loading && (
-          <div className="flex items-center justify-center mb-4">
-            <div className="progressBar mb-4"></div>
+          <div className="mb-4">
+            <h3 className="text-center">Evaluating please stand by...</h3>
+            <div className="progressBar"></div>
           </div>
         )}
         {!loading && (
