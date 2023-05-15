@@ -13,3 +13,25 @@
 body {
 
 }
+
+@keyframes loading {
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+
+.progressBar {
+    position: relative;
+    height: 5px;
+    width: 100%;
+    background-color: #ddd;
+}
+
+.progressBar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background-color: #4CAF50;
+    animation: loading 15s linear infinite;
+}

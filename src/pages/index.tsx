@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
 import Head from 'next/head';
+import {trackEvent} from "@/utils/mixpanel";
 
 declare const gtag: any;
 const Evaluate: React.FC = () => {
@@ -20,6 +21,8 @@ const Evaluate: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const start = new Date();
+    trackEvent('Evaluate Start',  {duration: new Date().getTime() - start.getTime(), problem, solution, happyEnding});
     if (!problem || !solution || !happyEnding) {
       setError('Please fill in all the fields.');
       return;
@@ -45,9 +48,11 @@ const Evaluate: React.FC = () => {
       const data = JSON.parse(response.data.body);
       const array = data.evaluation.split('\n');
       setEvaluation(array);
+      trackEvent('Evaluate Success',  {duration: new Date().getTime() - start.getTime(), problem, solution, happyEnding});
     } catch (err) {
       console.error(err);
       setError((err as any)?.response?.data?.message || 'Something went wrong.');
+      trackEvent('Evaluate Error',  {duration: new Date().getTime() - start.getTime(), err: err.toString(), problem, solution, happyEnding});
     }
     setLoading(false);
   };
@@ -55,7 +60,7 @@ const Evaluate: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto py-16 px-8 sm:py-24 sm:px-12 lg:px-16">
       <h1 className="text-2xl font-semibold text-center mb-6">
-        Pitch Evaluator. Enter your pitch in 3 parts.
+        Pitch Evaluator. Enter your pitch in 3 sentences.
       </h1>
       <Head>
         <title>Pitch Evaluator</title>
@@ -85,7 +90,7 @@ const Evaluate: React.FC = () => {
         ></textarea>
         {loading && (
           <div className="flex items-center justify-center mb-4">
-            <div className="w-5 h-5 border-t-2 border-blue-500 border-solid rounded-full animate-spin"></div>
+            <div className="progressBar mb-4"></div>
           </div>
         )}
         {!loading && (
