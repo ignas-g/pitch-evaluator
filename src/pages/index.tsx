@@ -52,7 +52,7 @@ const Evaluate: React.FC = () => {
     } catch (err) {
       console.error(err);
       setError((err as any)?.response?.data?.message || 'Something went wrong.');
-      trackEvent('Evaluate Error',  {duration: new Date().getTime() - start.getTime(), err: err.toString(), problem, solution, happyEnding});
+      trackEvent('Evaluate Error',  {duration: new Date().getTime() - start.getTime(), err: (err as any).toString(), problem, solution, happyEnding});
     }
     setLoading(false);
   };
