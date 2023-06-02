@@ -56,7 +56,7 @@ const Evaluate: React.FC = () => {
 
       const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
       const response = await retryAxios(apiGatewayUrl, {pitch});
-      const data = JSON.parse(response.data.body);
+      const data = JSON.parse(response?.data?.body);
       const array = data.evaluation.split('\n');
       setEvaluation(array);
       trackEvent('Evaluate Success',  {duration: new Date().getTime() - start.getTime(), problem, solution, happyEnding});
