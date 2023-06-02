@@ -33,5 +33,5 @@ body {
     left: 0;
     height: 5px;
     background-color: #4CAF50;
-    animation: loading 15s linear infinite;
+    animation: loading 30s linear infinite;
 }

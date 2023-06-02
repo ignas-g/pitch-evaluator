@@ -40,11 +40,22 @@ const Evaluate: React.FC = () => {
         happy_ending: happyEnding,
       });
     }
+    const retryAxios = async (url: string, payload: any, retries: number = 5) => {
+      for(let i = 0; i < retries; i++) {
+        try {
+          const response = await axios.post(url, payload);
+          return response;
+        } catch (err) {
+          if (i === retries - 1) throw err;
+        }
+      }
+    }
+
     try {
       const pitch = `Most people have this problem: ${problem}\nWe have this solution: ${solution}\nSo that we have a happy ending: ${happyEnding}`;
 
       const apiGatewayUrl = process.env.NEXT_PUBLIC_API_GATEWAY_URL as string;
-      const response = await axios.post(apiGatewayUrl, {pitch});
+      const response = await retryAxios(apiGatewayUrl, {pitch});
       const data = JSON.parse(response.data.body);
       const array = data.evaluation.split('\n');
       setEvaluation(array);
